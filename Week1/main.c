@@ -1,3 +1,6 @@
+#include "dice.c"
+#include "pointer.c"
+
 extern void dice();
 extern void test();
 

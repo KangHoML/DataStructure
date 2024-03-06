@@ -9,10 +9,10 @@
 void test(){
     int a[SIZE] = {1, 2, 3, 4, 5};
     int b[SIZE];
-    int* p_a = &a;
+    int* p_a = a;
 
     // b = a; error -> size가 서로 다름
 
     printf("sizeof(%d)\n", sizeof(a));
-    printf("sizeof(%d)", sizeof(p_a));
+    printf("sizeof(%d)\n", sizeof(p_a));
 }
