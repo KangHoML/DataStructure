@@ -11,7 +11,7 @@ void test(){
     int b[SIZE];
     int* p_a = a;
 
-    // b = a; error -> size가 서로 다름
+    // b = a; error -> 배열의 이름은 시작 주소가 아님
 
     printf("sizeof(%d)\n", sizeof(a));
     printf("sizeof(%d)\n", sizeof(p_a));
