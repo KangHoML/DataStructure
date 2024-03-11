@@ -22,7 +22,7 @@ void toss_dice(int n) {
     }
 }
 
-void dice() {
+void main() {
     int n;
     srand(time(NULL));
     scanf("%d", &n);

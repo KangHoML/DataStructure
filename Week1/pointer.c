@@ -6,7 +6,7 @@
 /*
 * 배열의 이름과 포인터는 서로 다름.
 */
-void test(){
+void main(){
     int a[SIZE] = {1, 2, 3, 4, 5};
     int b[SIZE];
     int* p_a = a;
