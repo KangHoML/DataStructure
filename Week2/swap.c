@@ -6,6 +6,7 @@ void swap(void* a, void* b, int size_t);
 void main() {
 	int i1 = 3, i2 = 9;
 	printf("i1: %d, i2: %d\n", i1, i2);
+	
 	swap(&i1, &i2, sizeof(int));
 	printf("i1: %d, i2: %d\n", i1, i2);
 }
