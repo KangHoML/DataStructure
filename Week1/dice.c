@@ -5,10 +5,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable: 4996)
 
-/*
-* malloc(mem_size): mem_size만큼 메모리 할당 + 초기화 X
-* calloc(num, size_t): num * size_t만큼 메모리 할당 + 0으로 초기화
-*/
 void toss_dice(int n) {
     int* freq = (int*)calloc(6, sizeof(int));
 
