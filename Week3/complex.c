@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct complex {
+typedef struct _complex {
     float re;
     float im;
 }complex;
