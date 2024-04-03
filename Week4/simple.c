@@ -109,7 +109,7 @@ int find_index(int key) {
         return index;
 }
 
-// Insert the node value t before the node value k
+// Insert the node value k before the node value t
 node *insert_node(int t, int k) {
     node *prev, *current, *target;
     
