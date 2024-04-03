@@ -3,13 +3,14 @@
 #include <string.h>
 
 #define _CRT_SECURE_NO_WARNINGS
-#pragma warninig(disable: 4996)
+#pragma warning(disable: 4996)
 
-#define NAME_SIZE 21
-#define CORP_SIZE 31
-#define TEL_SIZE 16
+#define NAME_SIZE 20
+#define CORP_SIZE 30
+#define TEL_SIZE 20
 #define REC_SIZE (NAME_SIZE + CORP_SIZE + TEL_SIZE)
 
+// Struct
 typedef struct _card{
     char name[NAME_SIZE];
     char corp[CORP_SIZE];
@@ -17,126 +18,149 @@ typedef struct _card{
     struct _card *next;
 }card;
 
+// Define head & tail
 card *head, *tail;
+
+// Define all functions
+void init_card();
+void input_card();
+int delete_card(char *name);
+card *search_card(char *name);
+void save_card(char *root);
+void load_card(char *root);
+void print_header();
+void print_card(card *t);
+int select_menu();
+void input(), delete(), search(), load(), save(), show();
+void (*fptr[6])() = {input, delete, search, load, save, show};
+
+void main() {
+    int i;
+    init_card();
+
+    while((i = select_menu()) != 7) {
+        fptr[i-1]();
+    }
+
+    printf("\n7. Program Ends ... \n");
+
+}
 
 void init_card() {
     head = (card *)calloc(1, sizeof(card));
     tail = (card *)calloc(1, sizeof(card));
-    
+
     head->next = tail;
     tail->next = tail;
 }
 
-// 입력을 통해 name card를 linked list에 추가
 void input_card() {
-    card *t = (card *)calloc(1, sizeof(card));
+    card *temp = (card *)calloc(1, sizeof(card));
 
-    printf("\nInput name card menu");
+    printf("Input namecard");
     printf("\nInput name: ");
-    fgets(t->name, sizeof(t->name), stdin);
+    fgets(temp->name, sizeof(temp->name), stdin);
 
     printf("\nInput corporation: ");
-    fgets(t->corp, sizeof(t->corp), stdin);
+    fgets(temp->corp, sizeof(temp->corp), stdin);
 
-    printf("\nInput telephone number: ");
-    fgets(t->tel, sizeof(t->tel), stdin);
+    printf("\nInput telephone: ");
+    fgets(temp->tel, sizeof(temp->tel), stdin);
 
-    // 나중에 입력한게 제일 앞에 있도록
-    t->next = head->next;
-    head->next = t;
+    temp->next = head->next;
+    head->next = temp;
 }
 
-// 이름을 통해 linked list에서 해당 node 삭제
-int delete_card(char *s) {
-    card *t, *p;
-    p = head;
-    t = p->next;
-
-    while(strcmp(s, t->name) != 0 && t != tail) {
-        p = p->next;
-        t = p->next;
+int delete_card(char *name) {
+    card *prev, *cursor;
+    
+    cursor = head->next;
+    while(strcmp(name, cursor->name) != 0 && cursor != tail) {
+        prev = cursor;
+        cursor = cursor->next;
     }
-
-    if (t == tail)
-        return 0;
-
-    p->next = t->next;
-    free(t);
+    
+    if (cursor == tail)
+        return -1;
+    
+    prev->next = cursor->next;
+    free(cursor);
+    
     return 1;
 }
 
-// 이름을 통해 linked list에서 해당 node 찾기
-card* search_card(char *s) {
-    card *t, *p;
-    p = head;
-    t = p->next;
+card *search_card(char *name) {
+    card *cursor;
 
-    while(strcmp(s, t->name) != 0 && t != tail) {
-        t = t->next;
+    cursor = head->next;
+    while(strcmp(name, cursor->name) != 0 && cursor != tail) {
+        cursor = cursor->next;
     }
 
-    if (t == tail)
+    if (cursor == tail)
         return NULL;
     else
-        return t;
+        return cursor;
 }
 
-// 파일 위치 s를 받아 binary 파일로 저장
-void save_card(char *s) {
-    FILE *fp = fopen(s, "wb");
-    card *t;
+void save_card(char* root) {
+    FILE *fp;
+    card* cursor = head->next;
 
-    t = head->next;
-    while(t != tail) {
-        fwrite(t, REC_SIZE, 1, fp);
-        t = t->next;
+    if ((fp = fopen(root, "wb")) == NULL)
+        printf("failed to open file");
+        
+    while(cursor != tail) {
+        fwrite(cursor, REC_SIZE, 1, fp);
+        cursor = cursor->next;
     }
 
     fclose(fp);
 }
 
-// 파일 위치 s를 받아 binary 파일로 로드
-void load_card(char *s) {
-    FILE *fp = fopen(s, "rb");
-    card *t, *u;
+void load_card(char* root) {
+    FILE *fp;
+    card *temp, *cursor;
 
-    // 현재 있는 linked list 내부의 데이터를 다 지우기 (delete_all 함수와 동일)
-    t = head->next;
-    while(t != tail) {
-        u = t;
-        t = t->next;
-        free(u);
+    // list 비워주기
+    cursor = head->next;
+    while (cursor != tail) {
+        temp = cursor;
+        cursor = cursor->next;
+        free(temp);
     }
     head->next = tail;
 
+    // load
+    if ((fp = fopen(root, "rb")) == NULL)
+        printf("failed to open file");
+    
     while(1) {
-        t = (card *)calloc(1, sizeof(card));
+        temp = (card *)calloc(1, sizeof(card));
 
-        // 더 이상 읽을게 없으면 t를 free 해준 뒤 break
-        if(!fread(t, REC_SIZE, 1, fp)) {
-            free(t);
+        // 파일의 끝에 도달 시 메모리 해제 및 break
+        if (fread(temp, REC_SIZE, 1, fp) == 0) {
+            free(temp);
             break;
         }
 
-        t->next = head->next;
-        head->next = t;
+        temp->next = head->next;
+        head->next = temp;
     }
 
     fclose(fp);
 }
 
 void print_header() {
-    printf("\nName                  "
-            "Corporation           "
-            "Telephone             ");
-    
-    printf("\n--------------------- "
-            "--------------------- "
-            "--------------------- ");
+    printf("\n%-20s %-30s %-20s", "Name", "Corporation", "Tel");
+    printf("\n-------------------- ------------------------------ --------------------");
 }
 
 void print_card(card *t) {
-    printf("\n%-20s    %-20s    %-20s", t->name, t->corp, t->tel);
+    printf("\n%-20.*s %-30.*s %-20.*s",
+           (int)strcspn(t->name, "\n"), t->name,
+           (int)strcspn(t->corp, "\n"), t->corp,
+           (int)strcspn(t->tel, "\n"), t->tel);
 }
 
 int select_menu() {
@@ -161,61 +185,53 @@ int select_menu() {
     return j;
 }
 
-void main() {
-    char *fname = "NameCard.dat";
+void input() {
+    input_card();
+}
+
+void delete() {
     char name[NAME_SIZE];
-    int i;
-    card *t;
+    printf("\nInput name to delete -> ");
+    fgets(name, sizeof(name), stdin);
 
-    init_card();
+    if (delete_card(name) == -1)
+        printf("\nCan't find the name");
+}
 
-    while((i = select_menu()) != 7) {
-        switch(i) {
-            case 1:
-                input_card();
-                break;
-            
-            case 2:
-                printf("\nInput name to delete -> ");
-                fgets(name, sizeof(name), stdin);
+void search() {
+    char name[NAME_SIZE];
+    card *temp;
 
-                if(!delete_card(name))
-                    printf("\nCan't find the name...");
-                
-                break;
-            
-            case 3:
-                printf("\nInput name to search -> ");
-                fgets(name, sizeof(name), stdin);
+    printf("\nInput name to search -> ");
+    fgets(name, sizeof(name), stdin);
 
-                t = search_card(name);
-                
-                if (t == NULL)
-                    break;
-                
-                print_header();
-                print_card(t);
-                break;
-            
-            case 4:
-                load_card(fname);
-                break;
-            
-            case 5:
-                save_card(fname);
-                break;
-            
-            case 6:
-                t = head->next;
-                print_header();
-                
-                while(t != tail) {
-                    print_card(t);
-                    t = t->next;
-                }
-                break;
-        }
+    if ((temp = search_card(name)) == NULL) {
+        printf("\nCan't find the name");
+        return;
     }
-    printf("\n7. Program ends ...\n");
 
+    print_header();
+    print_card(temp);
+}
+
+void load() {
+    char *root = "NameCard.dat";
+    load_card(root);
+}
+
+void save() {
+    char *root = "NameCard.dat";
+    save_card(root);
+}
+
+void show() {
+    card *temp;
+
+    temp = head->next;
+    print_header();
+    
+    while(temp != tail) {
+        print_card(temp);
+        temp = temp->next;
+    }
 }
