@@ -136,8 +136,7 @@ void calc() {
         else if ((equation[i] == '+') || (equation[i] == '-') || (equation[i] == '*') || (equation[i] == '/')){
             push(equation[i]);
         }
-
-        if (equation[i] == ')') {
+        else if (equation[i] == ')') {
             printf("%c", pop());
         }
         i++;
