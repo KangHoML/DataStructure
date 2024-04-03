@@ -23,56 +23,15 @@ int delete_node(int key);
 node *delete_all();
 void print_list(node *current);
 
-// test all functions
+// Define functions for test
+void test1(), test2();
+
 void main() {
+    srand(time(NULL));
     init_node();
 
-    // test 1
-    printf("\n------test1------\n");
-    node *temp = head;
-    for (int i = 0; i < 5; i++) {
-        insert_next(i+1, temp);
-        temp = temp->next;
-    }
-    print_list(head->next);
-
-    // test 2
-    printf("\n------test2------\n");
-    temp = find_node(3);
-    int index = find_index(3);
-    if (temp == tail)
-        printf("failed to find\n");
-    else
-        printf("index %d\n", index);
-
-    if (delete_next(temp) == -1)
-        printf("failed to delete\n");
-    print_list(head->next);
-
-    // test 3
-    printf("\n------test3------\n");
-    insert_node(5, 11);
-    print_list(head->next);
-    delete_node(2);
-    print_list(head->next);
-
-    // test 4
-    printf("\n------test4------\n");
-    delete_all();
-    for (int i = 0; i < 6; i++) {
-        int random = rand() % 6 + 1;
-        insert_ordered(random, 0);
-    }
-    print_list(head->next);
-
-    // test 5
-    printf("\n------test5------\n");
-    delete_all();
-    for (int i = 0; i < 6; i++) {
-        int random = rand() % 6 + 1;
-        insert_ordered(random, 1);
-    }
-    print_list(head->next);
+    test1();
+    test2();
 }
 
 // Initialize simple linked list
@@ -252,3 +211,48 @@ void print_list(node *current) {
     printf("\n");
 }
 
+// test 1
+void test1() {
+    printf("------test1------\n");
+    node *temp = head;
+    for (int i = 0; i < 5; i++) {
+        insert_next(i+1, temp);
+        temp = temp->next;
+    }
+    print_list(head->next);
+    
+    temp = find_node(3);
+    int index = find_index(3);
+    if (temp == tail)
+        printf("failed to find\n");
+    else
+        printf("index %d\n", index);
+
+    if (delete_next(temp) == -1)
+        printf("failed to delete\n");
+    print_list(head->next);
+
+    insert_node(5, 11);
+    print_list(head->next);
+    delete_node(2);
+    print_list(head->next);
+
+}
+
+// test 4
+void test2() {
+    printf("\n------test2------\n");
+    delete_all();
+    for (int i = 0; i < 6; i++) {
+        int random = rand() % 6 + 1;
+        insert_ordered(random, 0);
+    }
+    print_list(head->next);
+
+    delete_all();
+    for (int i = 0; i < 6; i++) {
+        int random = rand() % 6 + 1;
+        insert_ordered(random, 1);
+    }
+    print_list(head->next);
+}
