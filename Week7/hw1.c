@@ -99,44 +99,37 @@ int* pop() {
 }
 
 // 각 구역 라벨링
-void labeling(int x, int y) {
-    int nx, ny;
+void labeling(int r, int c) {
+    int x, y, d, nx, ny;
     int *in_data, *out_data;
-    int flag, cnt;
-    node *cursor;
+    int flag = 0;
 
-    cnt = 0;
-    do {
-        flag = 0;
-        for (int d = 0; d < 8; d++) {
-            nx = x + dx[d];
-            ny = y + dy[d];
+    // 탐색할 인덱스에 대한 정보 push
+    in_data = (int *)calloc(3, sizeof(int));
+    in_data[0] = r, in_data[1] = c, in_data[2] = 0;
+    push(in_data);
 
-            if (nx < 0 || nx >= 15 || ny < 0 || ny >= 15) continue;
-            if (input_map[nx][ny] == 0) continue;
+    // stack이 비었을 때까지
+    while(1) {
+        if ((out_data = pop()) == NULL)
+            break;
+        x = out_data[0], y = out_data[1], d = out_data[2];
 
-            in_data[0] = x;
-            in_data[1] = y;
-            in_data[2] = d;
+        for (int i = 0; i < 8; i++) {
+            nx = x + dx[(d+i)%8];
+            ny = y + dy[(d+i)%8];
 
-            push(in_data);
-            flag = 1;
-            cnt +=1;
+            if (nx >= 0 && nx < 15 && ny >= 0 && ny < 15 && input_map[nx][ny] == 1) {
+                input_map[nx][ny] = label;
+                in_data[0] = x, in_data[1] = y, in_data[2] = d;
+                push(in_data);
+                flag = 1;
+            }
         }
-
-        x = nx;
-        y = ny;
-    } while(flag != 0);
-
-    if (cnt == 0)
-        return;
-
-    cursor = head->next;
-    while(cursor->next != tail) {
-        out_data = pop();
-        input_map[out_data[0]][out_data[1]] = label;
     }
 
-    label++;
-    pop();
+    if (flag == 1){
+        label++;
+    }
+    free(in_data);
 }
