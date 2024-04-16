@@ -51,6 +51,10 @@ void main() {
     // 전체 배열에 대해 완전 탐색
     for (int i = 0; i < 15; i++) {
         for (int j = 0; j < 15; j++) {
+            // 현재 인덱스 push
+            in_data[0] = i, in_data[1] = j, in_data[2] = 0;
+            push(in_data);
+
             // 8 개의 방향을 탐색
             for (int k = 0; k < 8; k++) {
                 nx = i + dx[k];
@@ -58,18 +62,14 @@ void main() {
                 
                 // 범위 안에 존재하며 라벨링이 필요한 부분인지 체크
                 if (nx >= 0 && nx < 15 && ny >= 0 && ny < 15 && input_map[nx][ny] == 1) {
-                    // 현재 인덱스 push
-                    in_data[0] = i, in_data[1] = j, in_data[2] = k;
-                    push(in_data);
-
                     // 라벨링
                     labeling(nx, ny, k);
                     label++;
-
-                    // 마지막 (i, j) 부분 pop() 해주기
-                    pop();
                 }
+
             }
+            // 마지막 (i, j) 부분 pop() 해주기
+            pop();
         }
     }
     
