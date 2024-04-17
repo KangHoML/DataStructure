@@ -134,7 +134,6 @@ int* pop() {
 void labeling(int r, int c, int dir) {
     int x, y, d, nx, ny;
     int *in_data, *out_data;
-    node *cursor = head->next;
 
     // 초기 인덱스에 대한 정보 push
     in_data = (int*)calloc(3, sizeof(int));
