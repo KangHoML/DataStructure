@@ -79,10 +79,8 @@ void filtering(int *noise_data, int *recon_data, int h, int w, int k) {
 
                     // window에 저장
                     window[cnt] = noise_data[ii * w + jj];
-
                     cnt++;
                 }
-
             }
 
             // 정렬
