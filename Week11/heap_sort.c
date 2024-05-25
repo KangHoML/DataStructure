@@ -131,7 +131,7 @@ void up_heap_sort(int *a, int N) {
 void down_heap_sort(int *a, int N) {
     int heap_size, value;
 
-    // heap 구성
+    // heap 구성 (마지막 parent가 N / 2)
     for (int i = N / 2; i > 0; i--) {
         down_heap(a, N, i);
     }
@@ -140,7 +140,7 @@ void down_heap_sort(int *a, int N) {
     while(heap_size > 1) {
         swap(&a[1], &a[heap_size], sizeof(int)); // 처음과 마지막 노드 교체
         
-       down_heap(a, --heap_size, 1);
+        down_heap(a, --heap_size, 1);
     }
 }
 
