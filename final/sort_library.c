@@ -1,5 +1,4 @@
 #include "sort_library.h"
-#include "stack_library.h"
 
 // sort fucntion
 void select_sort(void *base, int n_elem, int size, FCMP fcmp) {
@@ -12,14 +11,14 @@ void select_sort(void *base, int n_elem, int size, FCMP fcmp) {
             if (fcmp(BASE(j), BASE(min_idx)) < 0) min_idx = j;
         }
         
-        _swap(BASE(i), BASE(min_idx), size);
+        swap(BASE(i), BASE(min_idx), size);
     }
 }
 
 void bubble_sort(void *base, int n_elem, int size, FCMP fcmp) {
     for (int i = 0; i < n_elem - 1; i++) {
         for (int j = 1; j < n_elem - i; j++) {
-            if (fcmp(BASE(j-1), BASE(j)) > 0) _swap(BASE(j-1), BASE(j), size);
+            if (fcmp(BASE(j-1), BASE(j)) > 0) swap(BASE(j-1), BASE(j), size);
         }
     }
 }
@@ -96,11 +95,11 @@ void quick_sort(void *base, int n_elem, int size, FCMP fcmp) {
             if (low >= high) break;
 
             // low와 high 바꾸어주기
-            _swap(BASE(low), BASE(high), size);
+            swap(BASE(low), BASE(high), size);
         }
 
         // 최종 low와 pivot의 위치와 교환
-        _swap(BASE(low), BASE(right), size);
+        swap(BASE(low), BASE(right), size);
 
         // divide된 배열 중 큰 배열 push
         push(right);
@@ -190,7 +189,7 @@ void dn_heap_sort(void *base, int n_elem, int size, FCMP fcmp) {
     }
 
     while(h_elem > 1) {
-        _swap(BASE(1), BASE(h_elem), size);
+        swap(BASE(1), BASE(h_elem), size);
         _downheap(base, --h_elem, 1, size, fcmp);
     }
 
@@ -198,33 +197,12 @@ void dn_heap_sort(void *base, int n_elem, int size, FCMP fcmp) {
 }
 
 // util function
-void _swap(void *a, void *b, int size) {
-    void *t = malloc(size);
-
-    memcpy(t, a, size);
-    memcpy(a, b, size);
-    memcpy(b, t, size);
-
-    free(t);
-}
-
 void sort(void *dst, void *src, int n_elem, int size, FCMP fcmp, void(* fptr)(void *, int, int, FCMP)) {
     for (int i = 0; i < n_elem; i++) {
         memcpy(DST(i), SRC(i), size);
     }
 
     fptr(dst, n_elem, size, fcmp);
-}
-
-int intcmp(const void *a, const void *b) {
-    return *(int *)a - *(int *)b;
-}
-
-void print_int(void *base, int n_elem) {
-    for (int i = 0; i < n_elem; i++) {
-        printf("%-5d", *((int *)base + i));
-    }
-    printf("\n");
 }
 
 void _shift(void *base, int n_elem, int size, int r) {

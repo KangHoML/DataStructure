@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c99
 
-SRCS = sort.c ../sort_library.c ../stack_library.c ../util_library.c
+SRCS = fruit.c ../search_library.c ../sort_library.c ../util_library.c ../stack_library.c
 OBJS = $(SRCS:.c=.o)
 EXEC = main
 

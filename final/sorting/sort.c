@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "sort_library.h"
+
+#include "../util_library.h"
+#include "../sort_library.h"
 
 #define SIZE 10
 

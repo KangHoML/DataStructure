@@ -133,8 +133,8 @@ void example2() {
 }
 
 void main() {
-    example1();
-    // example2();
+    // example1();
+    example2();
 }
 
 // generalized functions for search

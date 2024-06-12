@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "sort_library.h"
+
+#include "../util_library.h"
+#include "../sort_library.h"
 
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable: 4996)
