@@ -1,0 +1,1 @@
+c has only one-dimensional arrays, and the size of an array must be fixed as a constant at compilation time. However, an element of an array may be an object of any type, including another array; this makes it possible to simulate multi-dimensional array fairly easily.
