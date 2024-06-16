@@ -145,14 +145,6 @@ void balancify(node *base, int *n_elem, int size) {
     free(a);
 }
 
-void *_rotate(void *key, node *pivot, node *base, FCMP fcmp) {
-
-}
-
-void *rbt_insert(void *key, node *base, int *n_elem, int size, FCMP fcmp) {
-    
-}
-
 void print_tree(node *t, void (*fptr)(void *), int level) {
     if (t == NULL) return;
 
