@@ -20,4 +20,7 @@ void _sort(node *t, void *a, int size);
 void *_balance(int idx, void *a, int size);
 void balancify(node *base, int *n_elem, int size);
 
+void *_rotate(void *key, node *pivot, node *base, FCMP fcmp);
+void *rbt_insert(void *key, node *base, int *n_elem, int size, FCMP fcmp);
+
 void print_tree(node *t, void (*fptr)(void *), int level);
